@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>treesis</title>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="images/TreesisLogo.png">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -55,7 +55,7 @@
   .logo-tree img { width: 88px; height: 88px; object-fit: contain; background: transparent; mix-blend-mode: multiply; }
 
   .site-title {
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Averia Serif Libre', serif;
     font-size: clamp(48px, 8vw, 96px);
     font-weight: 700;
     letter-spacing: -2px;
@@ -188,7 +188,7 @@
     display: none;
     background: #000;
     color: #fff;
-    height: 947px;
+    height: 917px;
     overflow: hidden;
     position: relative;
   }
@@ -221,7 +221,7 @@
   #exhibition-page .site-title {
     color: #fff;
     font-size: clamp(52px, 8vw, 100px);
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Averia Serif Libre', serif;
   }
 
   #exhibition-page .nav-link {
@@ -264,8 +264,8 @@
   .exhib-medium-name {
     position: absolute;
     left: 274px;
-    top: 514px; /* page y: 417+231+14 = 662 - 148 */
-    font-family: 'Libre Baskerville', serif;
+    top: 514px;
+    font-family: 'Averia Serif Libre', serif;
     font-size: 52px;
     font-weight: 400;
     letter-spacing: -1px;
@@ -277,7 +277,7 @@
     position: absolute;
     left: 286px;
     top: 576px;
-    font-family: 'Libre Baskerville', serif;
+    font-family: 'Averia Serif Libre', serif;
     font-size: 16px;
     font-weight: 400;
     font-style: italic;
@@ -319,7 +319,7 @@
   .exhib-tree-box {
     position: absolute;
     left: 764px;
-    top: 81px; /* page y:229 - header 148 */
+    top: 66px; /* page y:214 - header 148 */
     width: 448px;
     height: 673px;
     overflow: hidden;
@@ -450,12 +450,13 @@
   <header>
     <div class="exhib-header-inner">
       <div style="display:flex;align-items:flex-end;gap:32px;padding-top:60px;">
-        <div class="logo-tree" onclick="showMain()" style="cursor:pointer;width:52px;height:52px;margin-bottom:0;">
+        <div class="logo-tree" onclick="exhibTogglePlay()" style="cursor:pointer;width:52px;height:52px;margin-bottom:0;">
           <img src="images/TreesisLogo.png" alt="Treesis Logo" style="width:52px;height:52px;" />
         </div>
         <button class="nav-link" onclick="showMain()">Browse</button>
         <button class="nav-link" onclick="showPresentation()">Button View</button>
         <button class="nav-link active">Exhibition View</button>
+        <span style="font-family:Helvetica,Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.35);margin-left:8px;line-height:1;">click the wooden leaf to play/pause</span>
       </div>
       <div class="exhib-title-fixed site-title" onclick="showMain()" style="cursor:pointer;">treesis</div>
     </div>
@@ -1022,7 +1023,7 @@ requestAnimationFrame(() => requestAnimationFrame(matchImageToGrid));
 <!-- ══════════════ ADMIN OVERLAY ══════════════ -->
 <div id="admin-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
   <div id="admin-login" style="background:var(--cream);padding:40px;width:320px;text-align:center;">
-    <div style="font-family:'Libre Baskerville',serif;font-size:22px;margin-bottom:24px;">Admin</div>
+    <div style="font-family:'Averia Serif Libre',serif;font-size:22px;margin-bottom:24px;">Admin</div>
     <input id="admin-pw-input" type="password" placeholder="PASSWORD" style="width:100%;padding:10px;font-family:Helvetica,Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid var(--dark);background:var(--cream);outline:none;margin-bottom:8px;" />
     <div id="admin-pw-error" style="display:none;color:#a00;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Incorrect password</div>
     <div style="display:flex;gap:8px;margin-top:8px;">
@@ -1032,7 +1033,7 @@ requestAnimationFrame(() => requestAnimationFrame(matchImageToGrid));
   </div>
   <div id="admin-panel" style="display:none;background:var(--cream);width:90%;max-width:680px;max-height:90vh;overflow-y:auto;padding:40px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
-      <div style="font-family:'Libre Baskerville',serif;font-size:24px;">Treesis Admin</div>
+      <div style="font-family:'Averia Serif Libre',serif;font-size:24px;">Treesis Admin</div>
       <button onclick="closeAdmin()" style="background:none;border:1px solid var(--dark);padding:6px 14px;cursor:pointer;font-family:Helvetica,Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Close</button>
     </div>
     <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">All Pieces</div>
