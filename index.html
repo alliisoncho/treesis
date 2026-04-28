@@ -446,6 +446,7 @@
         <button class="nav-link" onclick="showMain()">Browse</button>
         <button class="nav-link" onclick="showPresentation()">Button View</button>
         <button class="nav-link active">Exhibition View</button>
+        <button class="nav-link" id="exhib-fs-btn" onclick="toggleFullscreen()" style="opacity:0.45;">⛶ Fullscreen</button>
       </div>
       <div class="exhib-title-fixed site-title" onclick="showMain()" style="cursor:pointer;">treesis</div>
     </div>
@@ -851,6 +852,25 @@ function exhibTogglePlay() {
   }
   if (exhibPlaying) { exhibStop(); } else { exhibStart(); }
 }
+
+function toggleFullscreen() {
+  const el = document.getElementById('exhibition-page');
+  if (!document.fullscreenElement) {
+    el.requestFullscreen && el.requestFullscreen();
+  } else {
+    document.exitFullscreen && document.exitFullscreen();
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  const btn = document.getElementById('exhib-fs-btn');
+  if (!btn) return;
+  if (document.fullscreenElement) {
+    btn.textContent = '⛶ Exit Fullscreen';
+  } else {
+    btn.textContent = '⛶ Fullscreen';
+  }
+});
 
 // Stop timer when leaving Button View
 function showMain() {
