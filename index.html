@@ -263,8 +263,10 @@
   /* Medium name + quote below instrument box */
   .exhib-medium-name {
     position: absolute;
-    left: 274px;
+    left: 286px;
     top: 514px;
+    width: 231px;
+    text-align: center;
     font-family: 'Averia Serif Libre', serif;
     font-size: 52px;
     font-weight: 400;
@@ -277,12 +279,24 @@
     position: absolute;
     left: 286px;
     top: 576px;
+    width: 231px;
+    text-align: center;
     font-family: 'Averia Serif Libre', serif;
     font-size: 16px;
     font-weight: 400;
     font-style: italic;
     color: rgba(255,255,255,0.7);
     letter-spacing: 0;
+  }
+
+  /* Play/pause pop animation */
+  @keyframes ppPop {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.18); }
+    100% { transform: scale(1); }
+  }
+  .pp-pop {
+    animation: ppPop 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 
   /* Tree image box: 448×673 at x=764, y=229 */
@@ -801,8 +815,9 @@ function exhibNext() {
 
 function exhibStart() {
   exhibPlaying = true;
-  document.getElementById('exhib-ppIcon').src = 'Images/PauseButton.png';
-  document.getElementById('exhib-ppIcon').alt = 'Pause';
+  // Playing → show pause icon (two lines) so user can pause
+  const icon = document.getElementById('exhib-ppIcon');
+  if (icon) { icon.src = 'Images/PauseButton.png'; icon.alt = 'Pause'; }
   if (!exhibQueue.length) exhibQueue = exhibShuffleNew(exhibActivePieceId);
   exhibNext();
   clearInterval(exhibTimer);
@@ -811,13 +826,21 @@ function exhibStart() {
 
 function exhibStop() {
   exhibPlaying = false;
-  const ppIcon = document.getElementById('exhib-ppIcon');
-  if (ppIcon) { ppIcon.src = 'Images/PlayButton.png'; ppIcon.alt = 'Play'; }
+  // Stopped → show play icon (triangle) so user can play
+  const icon = document.getElementById('exhib-ppIcon');
+  if (icon) { icon.src = 'Images/PlayButton.png'; icon.alt = 'Play'; }
   clearInterval(exhibTimer);
   exhibTimer = null;
 }
 
 function exhibTogglePlay() {
+  const icon = document.getElementById('exhib-ppIcon');
+  // Pop animation: scale up briefly then snap back
+  if (icon) {
+    icon.classList.remove('pp-pop');
+    void icon.offsetWidth; // force reflow to restart animation
+    icon.classList.add('pp-pop');
+  }
   if (exhibPlaying) { exhibStop(); } else { exhibStart(); }
 }
 
