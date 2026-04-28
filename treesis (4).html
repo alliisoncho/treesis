@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>treesis</title>
+<link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="images/TreesisLogo.png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f0ebe0;
+    --dark: #282D1D;
+    --mid: #3a3a2e;
+    --grid-line: #282D1D;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: Helvetica, Arial, sans-serif;
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+    overflow-x: hidden;
+  }
+
+  .nav-link {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--dark);
+    cursor: pointer;
+    opacity: 0.45;
+    transition: opacity 0.15s;
+    line-height: 1;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  .nav-link:hover { opacity: 0.9; }
+  .nav-link.active { opacity: 1; border-bottom: 1.5px solid var(--dark); padding-bottom: 1px; }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 24px 32px 16px;
+  }
+
+  .logo-tree { width: 88px; height: 88px; margin-top: 8px; align-self: flex-end; margin-bottom: 4px; cursor: pointer; }
+  .logo-tree img { width: 88px; height: 88px; object-fit: contain; background: transparent; mix-blend-mode: multiply; }
+
+  .site-title {
+    font-family: 'Averia Serif Libre', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1;
+    color: var(--dark);
+    cursor: pointer;
+  }
+
+  /* ══════════════════════════════
+     BROWSE PAGE — grid | info | image
+  ══════════════════════════════ */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 28% 38%;
+    min-height: calc(100vh - 160px);
+  }
+
+  .grid-wrapper {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .scroll-track {
+    position: fixed;
+    top: 24px; bottom: 24px;
+    width: 1px;
+    background: var(--grid-line);
+    flex-shrink: 0;
+    z-index: 50;
+  }
+  .scroll-thumb {
+    position: absolute;
+    width: 6px; left: -2.5px;
+    background: var(--dark);
+    transition: top 0.05s linear;
+    min-height: 32px;
+  }
+
+  .grid-panel {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--grid-line);
+    border-left: 1px solid var(--grid-line);
+    margin-left: 32px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    align-self: start;
+    flex: 1;
+  }
+
+  .grid-cell {
+    border-right: 1px solid var(--grid-line);
+    border-bottom: 1px solid var(--grid-line);
+    aspect-ratio: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    overflow: hidden;
+    background: var(--cream);
+  }
+  .grid-cell:hover { background: #e2ddd0; }
+  .grid-cell.active { background: var(--dark); }
+  .grid-cell.active .instrument-icon { filter: brightness(0) invert(1); }
+  .grid-cell.active span { color: var(--cream) !important; }
+  .instrument-icon { width: 52%; height: 52%; object-fit: contain; pointer-events: none; }
+
+  /* ── INFO PANEL ── */
+  .info-panel { padding: 32px 28px; display: flex; flex-direction: column; }
+
+  .piece-title {
+    font-size: 14px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: -0.02em; line-height: 0.92; margin-bottom: 28px;
+  }
+  .piece-title::before { content: '"'; }
+  .piece-title::after  { content: '"'; }
+
+  .meta-row { display: flex; align-items: baseline; margin-bottom: 14px; font-size: 13px; text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.92; }
+  .meta-label { font-weight: 700; white-space: nowrap; min-width: 72px; }
+  .meta-dots { flex: 1; text-align: center; letter-spacing: 0.08em; font-weight: 700; overflow: hidden; white-space: nowrap; padding: 0 4px; }
+  .meta-value { white-space: nowrap; font-size: 13px; text-transform: uppercase; letter-spacing: -0.02em; }
+
+  .writing-label { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: -0.02em; margin-top: 20px; margin-bottom: 10px; }
+  .writing-dots { display: inline; letter-spacing: 0.08em; }
+  .writing-text { font-size: 12.5px; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05; }
+
+  .read-more-btn {
+    margin-top: 28px; display: inline-block;
+    background: var(--dark); color: var(--cream);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em;
+    padding: 10px 18px; border: none; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .read-more-btn:hover { background: var(--cream); color: var(--dark); outline: 1.5px solid var(--dark); }
+
+  /* ── IMAGE PANEL (right) ── */
+  .image-panel {
+    overflow: hidden; position: relative; min-height: 480px;
+    padding-right: 24px; padding-top: 24px; padding-bottom: 24px; padding-left: 0;
+  }
+  .image-panel-inner {
+    width: 100%; height: 100%;
+    border: 1px solid var(--grid-line);
+    overflow: hidden; position: relative; min-height: 432px;
+  }
+  .tree-image { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .image-placeholder {
+    width: 100%; height: 100%; min-height: 600px;
+    display: flex; align-items: center; justify-content: center;
+    color: #5a6b52; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .image-fade { animation: fadeImg 0.35s ease; }
+  @keyframes fadeImg { from { opacity: 0; } to { opacity: 1; } }
+
+  /* ══════════════════════════════
+     BUTTON VIEW LAYOUT — info | image (no grid)
+  ══════════════════════════════ */
+  .bv-layout {
+    display: grid;
+    grid-template-columns: 34% 1fr;
+    min-height: calc(100vh - 160px);
+  }
+
+  /* ══════════════════════════════
+     EXHIBITION VIEW
+  ══════════════════════════════ */
+  #exhibition-page {
+    display: none;
+    background: #000;
+    color: #fff;
+    height: 917px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Exhibition header layout */
+  #exhibition-page header {
+    background: #000;
+    padding: 0;
+    position: relative;
+    height: 148px;
+  }
+
+  #exhibition-page .exhib-header-inner {
+    position: relative;
+    height: 148px;
+    padding: 28px 36px 0;
+  }
+
+  #exhibition-page .exhib-title-fixed {
+    position: absolute;
+    left: 1000px;
+    top: 28px;
+  }
+
+  #exhibition-page .logo-tree img {
+    mix-blend-mode: normal;
+    filter: brightness(0) invert(1);
+  }
+
+  #exhibition-page .site-title {
+    color: #fff;
+    font-size: clamp(52px, 8vw, 100px);
+    font-family: 'Averia Serif Libre', serif;
+  }
+
+  #exhibition-page .nav-link {
+    color: #fff;
+  }
+  #exhibition-page .nav-link.active {
+    border-bottom-color: #fff;
+  }
+
+  /* Canvas area below header */
+  .exhib-canvas {
+    position: absolute;
+    top: 148px; /* below header */
+    left: 0; right: 0; bottom: 0;
+  }
+
+  /* Instrument box: fixed 231×231 */
+  .exhib-instrument-box {
+    position: absolute;
+    left: 286px;
+    top: 269px; /* page y:417 - header 148 */
+    width: 231px;
+    height: 231px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .exhib-instrument-box img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .exhib-instrument-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: #1a1a1a;
+    color: #555; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* Medium name + quote below instrument box */
+  .exhib-medium-name {
+    position: absolute;
+    left: 274px;
+    top: 514px;
+    font-family: 'Averia Serif Libre', serif;
+    font-size: 52px;
+    font-weight: 400;
+    letter-spacing: -1px;
+    line-height: 1;
+    color: #fff;
+  }
+
+  .exhib-quote {
+    position: absolute;
+    left: 286px;
+    top: 576px;
+    font-family: 'Averia Serif Libre', serif;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: italic;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0;
+  }
+
+  /* Play/pause button: 70×70 at x=606, y=508 */
+  .exhib-playpause-btn {
+    position: absolute;
+    left: 606px;
+    top: 360px; /* page y:508 - header 148 */
+    width: 70px;
+    height: 70px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.6);
+    transition: color 0.15s;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .exhib-playpause-btn:hover { color: #fff; }
+  .exhib-pp-icon {
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  /* Tree image box: 448×673 at x=764, y=229 */
+  .exhib-tree-box {
+    position: absolute;
+    left: 764px;
+    top: 66px; /* page y:214 - header 148 */
+    width: 448px;
+    height: 673px;
+    overflow: hidden;
+  }
+  .exhib-tree-box img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .exhib-tree-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background: #111;
+    color: #444; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  /* Fade animation for exhibition images — disabled */
+  /* .exhib-fade { animation: exhibFadeIn 0.4s ease both; } */
+  /* @keyframes exhibFadeIn { from { opacity: 0; } to { opacity: 1; } } */
+
+  /* ══════════════════════════════
+     DETAIL MODAL
+  ══════════════════════════════ */
+  #detail-backdrop {
+    display: none; position: fixed; inset: 0;
+    background: rgba(20,25,14,0.65); z-index: 200;
+    align-items: center; justify-content: center;
+    animation: backdropIn 0.2s ease;
+  }
+  @keyframes backdropIn { from { opacity: 0; } to { opacity: 1; } }
+
+  #detail-page {
+    position: relative; background: var(--cream);
+    width: 92vw; max-width: 1200px; height: 88vh; max-height: 920px;
+    border: 1px solid var(--dark); overflow: hidden;
+    display: flex; flex-direction: column;
+    animation: modalIn 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes modalIn { from { transform: scale(0.94) translateY(18px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+  .detail-header { display: flex; align-items: center; justify-content: flex-end; padding: 10px 14px; flex-shrink: 0; }
+  .close-x-btn { font-size: 18px; background: none; border: none; cursor: pointer; color: var(--dark); padding: 4px 6px; opacity: 0.6; transition: opacity 0.15s; }
+  .close-x-btn:hover { opacity: 1; }
+
+  .detail-body { display: grid; grid-template-columns: 44% 1fr; flex: 1; overflow: hidden; min-height: 0; }
+  .detail-image-col { overflow: hidden; background: var(--cream); display: flex; align-items: stretch; min-height: 0; }
+  .detail-image-col img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .detail-image-placeholder { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; color: #8a9a82; font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; }
+  .detail-text-col { padding: 28px 36px 40px; overflow-y: auto; min-height: 0; }
+  .detail-piece-title { font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 28px; line-height: 1.1; }
+  .detail-meta { margin-bottom: 28px; }
+  .detail-writing-label { font-weight: 700; font-size: 13px; letter-spacing: -0.02em; margin-bottom: 16px; text-transform: uppercase; }
+  .detail-essay { font-size: 13.5px; line-height: 1.65; letter-spacing: -0.01em; max-width: 65%; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ BROWSE PAGE ══════════════ -->
+<div id="main-page">
+  <header>
+    <div class="logo-tree" onclick="showMain()">
+      <img src="images/TreesisLogo.png" alt="Treesis Logo" />
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:32px;">
+      <button class="nav-link active" id="nav-browse" onclick="showMain()">Browse</button>
+      <button class="nav-link" id="nav-pres" onclick="showPresentation()">Button View</button>
+      <button class="nav-link" id="nav-exhib" onclick="showExhibition()">Exhibition View</button>
+      <div class="site-title" onclick="showMain()">treesis</div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- LEFT: grid -->
+    <div class="grid-wrapper">
+      <div class="scroll-track" id="scrollTrack"><div class="scroll-thumb" id="scrollThumb"></div></div>
+      <div class="grid-panel" id="gridPanel"></div>
+    </div>
+    <!-- MIDDLE: info -->
+    <div class="info-panel"><div id="infoContent"></div></div>
+    <!-- RIGHT: image -->
+    <div class="image-panel" id="imagePanel">
+      <div class="image-panel-inner">
+        <div class="image-placeholder" id="imagePlaceholder">
+          <span style="font-size:32px;letter-spacing:-0.02em;text-transform:uppercase;">TREE HERE</span>
+        </div>
+        <img id="mainImage" class="tree-image" src="" alt="" style="display:none;" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ BUTTON VIEW PAGE ══════════════ -->
+<div id="presentation-page">
+  <header>
+    <div class="logo-tree" onclick="showMain()">
+      <img src="images/TreesisLogo.png" alt="Treesis Logo" />
+    </div>
+    <div style="display:flex;align-items:flex-end;gap:32px;">
+      <button class="nav-link" onclick="showMain()">Browse</button>
+      <button class="nav-link active">Button View</button>
+      <button class="nav-link" onclick="showExhibition()">Exhibition View</button>
+      <div class="site-title" onclick="showMain()">treesis</div>
+    </div>
+  </header>
+
+  <div class="bv-layout">
+    <!-- LEFT: info + play/pause -->
+    <div class="info-panel" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div id="bv-infoContent"></div>
+      <div style="margin-top:32px;">
+        <button id="bv-playpause" class="read-more-btn" onclick="bvTogglePlay()" style="margin-top:0;">PAUSE</button>
+      </div>
+    </div>
+    <!-- RIGHT: image -->
+    <div class="image-panel" id="bv-imagePanel">
+      <div class="image-panel-inner" style="min-height:520px;">
+        <div class="image-placeholder" id="bv-imagePlaceholder">
+          <span style="font-size:32px;letter-spacing:-0.02em;text-transform:uppercase;">TREE HERE</span>
+        </div>
+        <img id="bv-mainImage" class="tree-image" src="" alt="" style="display:none;" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ EXHIBITION VIEW PAGE ══════════════ -->
+<div id="exhibition-page">
+  <header>
+    <div class="exhib-header-inner">
+      <div style="display:flex;align-items:flex-end;gap:32px;padding-top:60px;">
+        <div class="logo-tree" onclick="exhibTogglePlay()" style="cursor:pointer;width:52px;height:52px;margin-bottom:0;">
+          <img src="images/TreesisLogo.png" alt="Treesis Logo" style="width:52px;height:52px;" />
+        </div>
+        <button class="nav-link" onclick="showMain()">Browse</button>
+        <button class="nav-link" onclick="showPresentation()">Button View</button>
+        <button class="nav-link active">Exhibition View</button>
+        <span style="font-family:Helvetica,Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.35);margin-left:8px;line-height:1;">click the wooden leaf to play/pause</span>
+      </div>
+      <div class="exhib-title-fixed site-title" onclick="showMain()" style="cursor:pointer;">treesis</div>
+    </div>
+  </header>
+
+  <div class="exhib-canvas">
+
+    <!-- Instrument / medium image box -->
+    <div class="exhib-instrument-box" id="exhib-instrBox">
+      <div class="exhib-instrument-placeholder" id="exhib-instrPlaceholder">—</div>
+      <img id="exhib-instrImg" src="" alt="" style="display:none;" />
+    </div>
+
+    <!-- Medium name + quote -->
+    <div class="exhib-medium-name" id="exhib-mediumName">—</div>
+    <div class="exhib-quote" id="exhib-quote"></div>
+
+    <!-- Play / Pause button -->
+    <button class="exhib-playpause-btn" id="exhib-playpause" onclick="exhibTogglePlay()">
+      <span class="exhib-pp-icon" id="exhib-ppIcon">▶</span>
+      <span id="exhib-ppLabel">PLAY</span>
+    </button>
+
+    <!-- Large tree image box -->
+    <div class="exhib-tree-box" id="exhib-treeBox">
+      <div class="exhib-tree-placeholder" id="exhib-treePlaceholder">Tree Here</div>
+      <img id="exhib-treeImg" src="" alt="" style="display:none;" />
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ DETAIL MODAL ══════════════ -->
+<div id="detail-backdrop">
+  <div id="detail-page">
+    <div class="detail-header">
+      <button class="close-x-btn" onclick="closeDetail()">&#x2715;</button>
+    </div>
+    <div class="detail-body">
+      <div class="detail-image-col">
+        <img id="detailImage" src="" alt="" style="display:none;" />
+        <div class="detail-image-placeholder" id="detailImagePlaceholder">Tree Here</div>
+      </div>
+      <div class="detail-text-col">
+        <div class="detail-piece-title" id="detailTitle"></div>
+        <div class="detail-meta" id="detailMeta"></div>
+        <div class="detail-writing-label">Writing:</div>
+        <div class="detail-essay" id="detailEssay"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CURSOR LABEL -->
+<div id="cursor-label" style="display:none;position:fixed;pointer-events:none;z-index:9999;background:var(--cream);border:1px solid var(--dark);padding:4px 8px;font-family:Helvetica,Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--dark);white-space:nowrap;"></div>
+
+<script>
+const ADMIN_PASSWORD = 'treesis';
+
+const DUMMY_SHORT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+const DUMMY_ESSAY = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+const DEFAULT_PIECES = [
+  { id:1,  title:"Default Photo",  medium:"Graphite",       date:"01.15.2026", instrumentLabel:"Graphite",    instrumentSymbol:"✦", instrumentImg:"", imageSrc:"", shortText:"This project documents the same tree, observed from the same angle, drawn repeatedly across the course of a semester. Each study uses a different material or instrument — graphite, ink, wax, water, code — to explore how the medium shapes perception. The tree does not change. The drawings do. What you see here is a record of that difference: one subject, many hands, many ways of seeing.", fullEssay:DUMMY_ESSAY },
+  { id:2,  title:"Study No. 2",    medium:"Charcoal",       date:"01.20.2026", instrumentLabel:"Charcoal",    instrumentSymbol:"◆", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:3,  title:"Study No. 3",    medium:"Ink",            date:"01.25.2026", instrumentLabel:"Ink",         instrumentSymbol:"▲", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:4,  title:"Study No. 4",    medium:"Watercolor",     date:"01.28.2026", instrumentLabel:"Watercolor",  instrumentSymbol:"●", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:5,  title:"Study No. 5",    medium:"Oil Pastel",     date:"02.01.2026", instrumentLabel:"Oil Pastel",  instrumentSymbol:"■", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:6,  title:"Study No. 6",    medium:"Wax Crayon",     date:"02.03.2026", instrumentLabel:"Wax Crayon",  instrumentSymbol:"◉", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:7,  title:"Study No. 7",    medium:"Ballpoint Pen",  date:"02.05.2026", instrumentLabel:"Ballpoint",   instrumentSymbol:"✚", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:8,  title:"Study No. 8",    medium:"Marker",         date:"02.07.2026", instrumentLabel:"Marker",      instrumentSymbol:"◈", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:9,  title:"Study No. 9",    medium:"Acrylic Paint",  date:"02.09.2026", instrumentLabel:"Acrylic",     instrumentSymbol:"⬟", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:10, title:"Study No. 10",   medium:"Digital",        date:"02.11.2026", instrumentLabel:"Digital",     instrumentSymbol:"⬡", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:11, title:"Study No. 11",   medium:"Colored Pencil", date:"02.13.2026", instrumentLabel:"Col. Pencil", instrumentSymbol:"◇", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:12, title:"Study No. 12",   medium:"Gouache",        date:"02.15.2026", instrumentLabel:"Gouache",     instrumentSymbol:"△", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:13, title:"Study No. 13",   medium:"Orange",         date:"02.17.2026", instrumentLabel:"Orange",      instrumentSymbol:"○", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:14, title:"Study No. 14",   medium:"Chalk",          date:"02.19.2026", instrumentLabel:"Chalk",       instrumentSymbol:"✿", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:15, title:"Study No. 15",   medium:"Linocut",        date:"02.21.2026", instrumentLabel:"Linocut",     instrumentSymbol:"❖", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:16, title:"Study No. 16",   medium:"Collage",        date:"02.23.2026", instrumentLabel:"Collage",     instrumentSymbol:"◎", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:17, title:"Study No. 17",   medium:"Pen & Ink",      date:"02.25.2026", instrumentLabel:"Pen & Ink",   instrumentSymbol:"✱", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:18, title:"Study No. 18",   medium:"Spray Paint",    date:"02.27.2026", instrumentLabel:"Spray Paint", instrumentSymbol:"◐", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:19, title:"Study No. 19",   medium:"Woodblock",      date:"03.01.2026", instrumentLabel:"Woodblock",   instrumentSymbol:"⬠", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:20, title:"Study No. 20",   medium:"Bleach",         date:"03.03.2026", instrumentLabel:"Bleach",      instrumentSymbol:"◑", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:21, title:"Study No. 21",   medium:"Coffee",         date:"03.05.2026", instrumentLabel:"Coffee",      instrumentSymbol:"⬢", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:22, title:"Study No. 22",   medium:"Embroidery",     date:"03.07.2026", instrumentLabel:"Embroidery",  instrumentSymbol:"✧", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:23, title:"Study No. 23",   medium:"Typewriter",     date:"03.09.2026", instrumentLabel:"Typewriter",  instrumentSymbol:"◫", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:24, title:"Study No. 24",   medium:"Rust",           date:"03.11.2026", instrumentLabel:"Rust",        instrumentSymbol:"◭", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+];
+
+function loadPieces() {
+  try { const s = localStorage.getItem('treesis_pieces'); return s ? JSON.parse(s) : DEFAULT_PIECES; }
+  catch(e) { return DEFAULT_PIECES; }
+}
+function savePieces(arr) { localStorage.setItem('treesis_pieces', JSON.stringify(arr)); }
+
+let pieces = loadPieces();
+let activePieceId = null;
+let adminAuthenticated = false;
+
+// ── PAGE SWITCHING ──
+
+function showPresentation() {
+  document.getElementById('main-page').style.display = 'none';
+  document.getElementById('presentation-page').style.display = 'block';
+  document.getElementById('nav-browse').classList.remove('active');
+  document.getElementById('nav-pres').classList.add('active');
+  closeDetail();
+  buildBvGrid();
+  bvSelectPiece(bvActivePieceId || 1);
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => requestAnimationFrame(() => { matchBvImageToGrid(); updateBvScrollThumb(); }));
+}
+
+// ── BUILD GRID ──
+function buildGrid() {
+  const panel = document.getElementById('gridPanel');
+  panel.innerHTML = '';
+  pieces.forEach(piece => {
+    const cell = document.createElement('div');
+    cell.className = 'grid-cell';
+    cell.dataset.id = piece.id;
+    if (piece.instrumentImg) {
+      const img = document.createElement('img');
+      img.src = piece.instrumentImg; img.alt = piece.instrumentLabel; img.className = 'instrument-icon';
+      cell.appendChild(img);
+    } else {
+      const span = document.createElement('span');
+      span.style.cssText = 'font-size:clamp(18px,2.5vw,28px);font-family:Helvetica,Arial,sans-serif;color:var(--dark);';
+      span.textContent = piece.instrumentSymbol || '✦';
+      cell.appendChild(span);
+    }
+    cell.addEventListener('click', () => selectPiece(piece.id));
+    cell.addEventListener('mouseenter', () => { const l = document.getElementById('cursor-label'); l.textContent = piece.instrumentLabel; l.style.display = 'block'; });
+    cell.addEventListener('mouseleave', () => { document.getElementById('cursor-label').style.display = 'none'; });
+    panel.appendChild(cell);
+  });
+}
+
+// ── SELECT PIECE ──
+function selectPiece(id) {
+  activePieceId = id;
+  const piece = pieces.find(p => p.id === id);
+  if (!piece) return;
+  document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('active'));
+  const cell = document.querySelector(`.grid-cell[data-id="${id}"]`);
+  if (cell) cell.classList.add('active');
+
+  const ph = document.getElementById('imagePlaceholder');
+  const img = document.getElementById('mainImage');
+  if (piece.imageSrc) {
+    img.src = piece.imageSrc; img.alt = piece.title; img.style.display = 'block';
+    img.classList.remove('image-fade'); void img.offsetWidth; img.classList.add('image-fade');
+    ph.style.display = 'none';
+  } else {
+    ph.style.display = 'flex';
+    ph.innerHTML = `<span style="font-size:32px;letter-spacing:-0.02em;text-transform:uppercase;">TREE HERE</span>`;
+    img.style.display = 'none';
+  }
+
+  if (id === 1) {
+    document.getElementById('infoContent').innerHTML = `
+      <div class="piece-title">Default Photo</div>
+      <div class="writing-text" style="margin-top:16px;">${piece.shortText}</div>`;
+  } else {
+    document.getElementById('infoContent').innerHTML = `
+      <div class="piece-title">${piece.title}</div>
+      <div class="meta-row"><span class="meta-label">MEDIUM</span><span class="meta-dots">. . . . . . . . . . . . . . . . . . . .</span><span class="meta-value">${piece.medium}</span></div>
+      <div class="meta-row"><span class="meta-label">DATE</span><span class="meta-dots">. . . . . . . . . . . . . . . . . . . .</span><span class="meta-value">${piece.date}</span></div>
+      <div class="writing-label">WRITING <span class="writing-dots">. . . . . . . . . .</span></div>
+      <div class="writing-text">${piece.shortText}</div>
+      <button class="read-more-btn" onclick="openDetail(${piece.id})">Read More →</button>`;
+  }
+}
+
+// ── DETAIL MODAL ──
+function openDetail(id) {
+  const piece = pieces.find(p => p.id === id);
+  if (!piece) return;
+  document.getElementById('detailTitle').textContent = `"${piece.title}"`;
+  document.getElementById('detailMeta').innerHTML = `
+    <div class="meta-row"><span class="meta-label">MEDIUM</span><span class="meta-dots">. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .</span><span class="meta-value">${piece.medium}</span></div>
+    <div class="meta-row"><span class="meta-label">DATE</span><span class="meta-dots">. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .</span><span class="meta-value">${piece.date}</span></div>`;
+  document.getElementById('detailEssay').textContent = piece.fullEssay;
+  const di = document.getElementById('detailImage'); const dph = document.getElementById('detailImagePlaceholder');
+  if (piece.imageSrc) { di.src = piece.imageSrc; di.alt = piece.title; di.style.display = 'block'; dph.style.display = 'none'; }
+  else { di.style.display = 'none'; dph.style.display = 'flex'; }
+  document.querySelector('.detail-text-col').scrollTop = 0;
+  document.getElementById('detail-backdrop').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeDetail() {
+  document.getElementById('detail-backdrop').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.getElementById('detail-backdrop').addEventListener('click', function(e) { if (e.target === this) closeDetail(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+// ══════════════════════════════════════════
+// BUTTON VIEW — random slideshow
+// ══════════════════════════════════════════
+let bvActivePieceId = null;
+let bvPlaying = false;
+let bvTimer = null;
+let bvShuffleQueue = [];
+
+function showPresentation() {
+  exhibStop();
+  document.getElementById('main-page').style.display = 'none';
+  document.getElementById('presentation-page').style.display = 'block';
+  document.getElementById('exhibition-page').style.display = 'none';
+  document.getElementById('nav-browse').classList.remove('active');
+  document.getElementById('nav-pres').classList.add('active');
+  document.getElementById('nav-exhib').classList.remove('active');
+  closeDetail();
+  window.scrollTo(0, 0);
+  bvStart();
+}
+
+function bvGetImagePieces() {
+  return pieces.filter(p => p.imageSrc);
+}
+
+function bvShuffleNew(exclude) {
+  const pool = bvGetImagePieces();
+  if (pool.length === 0) return pool;
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  // Move the excluded piece away from the front to avoid immediate repeat
+  if (exclude && shuffled[0] && shuffled[0].id === exclude) {
+    shuffled.push(shuffled.shift());
+  }
+  return shuffled;
+}
+
+function bvShowPiece(piece) {
+  bvActivePieceId = piece.id;
+  const ph = document.getElementById('bv-imagePlaceholder');
+  const img = document.getElementById('bv-mainImage');
+
+  img.src = piece.imageSrc;
+  img.alt = piece.title;
+  img.style.display = 'block';
+  ph.style.display = 'none';
+
+  if (piece.id === 1) {
+    document.getElementById('bv-infoContent').innerHTML = `
+      <div class="piece-title">Default Photo</div>
+      <div class="writing-text" style="margin-top:16px;">${piece.shortText}</div>`;
+  } else {
+    document.getElementById('bv-infoContent').innerHTML = `
+      <div class="piece-title">${piece.title}</div>
+      <div class="meta-row"><span class="meta-label">MEDIUM</span><span class="meta-dots">. . . . . . . . . . . . . . . . . . . .</span><span class="meta-value">${piece.medium}</span></div>
+      <div class="meta-row"><span class="meta-label">DATE</span><span class="meta-dots">. . . . . . . . . . . . . . . . . . . .</span><span class="meta-value">${piece.date}</span></div>
+      <div class="writing-label">WRITING <span class="writing-dots">. . . . . . . . . .</span></div>
+      <div class="writing-text">${piece.shortText}</div>
+      <button class="read-more-btn" onclick="openDetail(${piece.id})" style="margin-top:28px;">Read More →</button>`;
+  }
+}
+
+function bvNext() {
+  if (bvShuffleQueue.length === 0) {
+    bvShuffleQueue = bvShuffleNew(bvActivePieceId);
+  }
+  if (bvShuffleQueue.length === 0) return; // no images at all
+  const next = bvShuffleQueue.shift();
+  bvShowPiece(next);
+}
+
+function bvStart() {
+  bvPlaying = true;
+  document.getElementById('bv-playpause').textContent = 'PAUSE';
+  if (bvShuffleQueue.length === 0) bvShuffleQueue = bvShuffleNew(bvActivePieceId);
+  bvNext();
+  clearInterval(bvTimer);
+  bvTimer = setInterval(bvNext, 750);
+}
+
+function bvStop() {
+  bvPlaying = false;
+  document.getElementById('bv-playpause').textContent = 'PLAY';
+  clearInterval(bvTimer);
+  bvTimer = null;
+}
+
+function bvTogglePlay() {
+  if (bvPlaying) { bvStop(); } else { bvStart(); }
+}
+
+// ══════════════════════════════════════════
+// EXHIBITION VIEW — random slideshow
+// ══════════════════════════════════════════
+let exhibActivePieceId = null;
+let exhibPlaying = false;
+let exhibTimer = null;
+let exhibQueue = [];
+
+function showExhibition() {
+  bvStop();
+  document.getElementById('main-page').style.display = 'none';
+  document.getElementById('presentation-page').style.display = 'none';
+  document.getElementById('exhibition-page').style.display = 'block';
+  document.getElementById('nav-browse').classList.remove('active');
+  document.getElementById('nav-pres').classList.remove('active');
+  document.getElementById('nav-exhib').classList.add('active');
+  closeDetail();
+  window.scrollTo(0, 0);
+  exhibStart();
+}
+
+function exhibGetPieces() {
+  return pieces.filter(p => p.imageSrc);
+}
+
+function exhibShuffleNew(excludeId) {
+  const pool = exhibGetPieces();
+  if (!pool.length) return pool;
+  const shuffled = [...pool].sort(() => Math.random() - 0.5);
+  if (excludeId && shuffled[0] && shuffled[0].id === excludeId) shuffled.push(shuffled.shift());
+  return shuffled;
+}
+
+function exhibShowPiece(piece) {
+  exhibActivePieceId = piece.id;
+
+  // Tree image
+  const treeImg = document.getElementById('exhib-treeImg');
+  const treePh = document.getElementById('exhib-treePlaceholder');
+  treeImg.src = piece.imageSrc;
+  treeImg.alt = piece.title;
+  treeImg.style.display = 'block';
+  treePh.style.display = 'none';
+
+  // Instrument image
+  const instrImg = document.getElementById('exhib-instrImg');
+  const instrPh = document.getElementById('exhib-instrPlaceholder');
+  if (piece.instrumentImg) {
+    instrImg.src = piece.instrumentImg;
+    instrImg.style.display = 'block';
+    instrPh.style.display = 'none';
+  } else {
+    instrImg.style.display = 'none';
+    instrPh.style.display = 'flex';
+    instrPh.textContent = piece.instrumentSymbol || '—';
+    instrPh.style.fontSize = '48px';
+    instrPh.style.color = '#fff';
+    instrPh.style.background = 'transparent';
+  }
+
+  // Medium name + quote
+  document.getElementById('exhib-mediumName').textContent = piece.medium;
+  document.getElementById('exhib-quote').textContent = piece.title ? `"${piece.title}"` : '';
+}
+
+function exhibNext() {
+  if (exhibQueue.length === 0) exhibQueue = exhibShuffleNew(exhibActivePieceId);
+  if (!exhibQueue.length) return;
+  exhibShowPiece(exhibQueue.shift());
+}
+
+function exhibStart() {
+  exhibPlaying = true;
+  document.getElementById('exhib-ppIcon').textContent = '⏸';
+  document.getElementById('exhib-ppLabel').textContent = 'PAUSE';
+  if (!exhibQueue.length) exhibQueue = exhibShuffleNew(exhibActivePieceId);
+  exhibNext();
+  clearInterval(exhibTimer);
+  exhibTimer = setInterval(exhibNext, 750);
+}
+
+function exhibStop() {
+  exhibPlaying = false;
+  const ppIcon = document.getElementById('exhib-ppIcon');
+  const ppLabel = document.getElementById('exhib-ppLabel');
+  if (ppIcon) ppIcon.textContent = '▶';
+  if (ppLabel) ppLabel.textContent = 'PLAY';
+  clearInterval(exhibTimer);
+  exhibTimer = null;
+}
+
+function exhibTogglePlay() {
+  if (exhibPlaying) { exhibStop(); } else { exhibStart(); }
+}
+
+// Stop timer when leaving Button View
+function showMain() {
+  bvStop();
+  exhibStop();
+  document.getElementById('main-page').style.display = 'block';
+  document.getElementById('presentation-page').style.display = 'none';
+  document.getElementById('exhibition-page').style.display = 'none';
+  document.getElementById('nav-browse').classList.add('active');
+  document.getElementById('nav-pres').classList.remove('active');
+  document.getElementById('nav-exhib').classList.remove('active');
+  closeDetail();
+}
+
+// ══════════════════════════════════════════
+function openAdminLogin() {
+  document.getElementById('admin-overlay').style.display = 'flex';
+  document.getElementById('admin-login').style.display = 'block';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-pw-input').value = '';
+  setTimeout(() => document.getElementById('admin-pw-input').focus(), 100);
+}
+function checkAdminPassword() {
+  if (document.getElementById('admin-pw-input').value === ADMIN_PASSWORD) {
+    adminAuthenticated = true;
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    renderAdminList(); clearAdminForm();
+  } else { document.getElementById('admin-pw-error').style.display = 'block'; }
+}
+function closeAdmin() { document.getElementById('admin-overlay').style.display = 'none'; adminAuthenticated = false; }
+
+function renderAdminList() {
+  const list = document.getElementById('admin-piece-list');
+  list.innerHTML = '';
+  pieces.forEach((p, i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e0dbd0;gap:8px;';
+    row.innerHTML = `
+      <span style="font-size:11px;text-transform:uppercase;letter-spacing:-0.02em;flex:1;">${i+1}. ${p.title} — ${p.medium}</span>
+      <button onclick="editPiece(${p.id})" style="font-size:10px;padding:4px 10px;background:var(--dark);color:var(--cream);border:none;cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;font-family:Helvetica,Arial,sans-serif;">Edit</button>
+      ${p.id !== 1 ? `<button onclick="deletePiece(${p.id})" style="font-size:10px;padding:4px 10px;background:none;color:var(--dark);border:1px solid var(--dark);cursor:pointer;text-transform:uppercase;letter-spacing:0.05em;font-family:Helvetica,Arial,sans-serif;">Delete</button>` : ''}`;
+    list.appendChild(row);
+  });
+}
+function updateIconPreview() {
+  const path = document.getElementById('f-instrumentImg').value.trim();
+  const img = document.getElementById('icon-preview'); const empty = document.getElementById('icon-preview-empty');
+  if (path) { img.src = path; img.style.display = 'block'; empty.style.display = 'none'; }
+  else { img.src = ''; img.style.display = 'none'; empty.style.display = 'block'; }
+}
+function updateTreePreview() {
+  const path = document.getElementById('f-imageSrc').value.trim();
+  const img = document.getElementById('tree-preview'); const empty = document.getElementById('tree-preview-empty');
+  if (path) { img.src = path; img.style.display = 'block'; empty.style.display = 'none'; }
+  else { img.src = ''; img.style.display = 'none'; empty.style.display = 'block'; }
+}
+function clearAdminForm() {
+  document.getElementById('admin-form-title').textContent = 'ADD NEW PIECE';
+  ['edit-id','f-title','f-medium','f-date','f-instrumentLabel','f-instrumentImg','f-imageSrc','f-shortText','f-fullEssay'].forEach(id => { document.getElementById(id).value = ''; });
+  updateIconPreview(); updateTreePreview();
+}
+function editPiece(id) {
+  const p = pieces.find(x => x.id === id); if (!p) return;
+  document.getElementById('admin-form-title').textContent = 'EDIT PIECE';
+  document.getElementById('edit-id').value = p.id;
+  document.getElementById('f-title').value = p.title;
+  document.getElementById('f-medium').value = p.medium;
+  document.getElementById('f-date').value = p.date;
+  document.getElementById('f-instrumentLabel').value = p.instrumentLabel;
+  document.getElementById('f-instrumentImg').value = p.instrumentImg || '';
+  document.getElementById('f-imageSrc').value = p.imageSrc || '';
+  document.getElementById('f-shortText').value = p.shortText;
+  document.getElementById('f-fullEssay').value = p.fullEssay;
+  updateIconPreview(); updateTreePreview();
+  document.getElementById('admin-form-section').scrollIntoView({behavior:'smooth'});
+}
+function deletePiece(id) {
+  if (!confirm('Delete this piece?')) return;
+  pieces = pieces.filter(p => p.id !== id);
+  savePieces(pieces); buildGrid(); renderAdminList(); selectPiece(1);
+}
+function saveAdminForm() {
+  const editId = document.getElementById('edit-id').value;
+  const title = document.getElementById('f-title').value.trim();
+  const medium = document.getElementById('f-medium').value.trim();
+  const date = document.getElementById('f-date').value.trim();
+  const instrumentLabel = document.getElementById('f-instrumentLabel').value.trim();
+  const instrumentImg = document.getElementById('f-instrumentImg').value.trim();
+  const imageSrc = document.getElementById('f-imageSrc').value.trim();
+  const shortText = document.getElementById('f-shortText').value.trim();
+  const fullEssay = document.getElementById('f-fullEssay').value.trim();
+  if (!title || !medium || !date) { alert('Title, Medium and Date are required.'); return; }
+  if (editId) {
+    pieces = pieces.map(p => p.id === parseInt(editId) ? {...p, title, medium, date, instrumentLabel, instrumentImg, imageSrc, shortText, fullEssay} : p);
+  } else {
+    const newId = pieces.length > 0 ? Math.max(...pieces.map(p => p.id)) + 1 : 1;
+    pieces.push({id: newId, title, medium, date, instrumentLabel: instrumentLabel || medium, instrumentImg, instrumentSymbol:'✦', imageSrc, shortText, fullEssay});
+  }
+  savePieces(pieces); buildGrid(); renderAdminList(); clearAdminForm();
+  if (activePieceId) selectPiece(activePieceId);
+  document.getElementById('admin-save-confirm').style.display = 'block';
+  setTimeout(() => document.getElementById('admin-save-confirm').style.display = 'none', 2000);
+}
+
+document.addEventListener('click', e => { if (e.clientX < 40 && e.clientY > window.innerHeight - 40) openAdminLogin(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('admin-overlay').style.display === 'flex') {
+    checkAdminPassword();
+    return;
+  }
+  const onExhibition = document.getElementById('exhibition-page').style.display === 'block';
+  const onButtonView = document.getElementById('presentation-page').style.display === 'block';
+
+  // Spacebar — toggle play/pause on Exhibition or Button View
+  if (e.code === 'Space' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    if (onExhibition) { e.preventDefault(); exhibTogglePlay(); return; }
+    if (onButtonView) { e.preventDefault(); bvTogglePlay(); return; }
+  }
+
+  // Backslash \ hotkey
+  if (e.key === '\\' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    if (onExhibition) { e.preventDefault(); exhibTogglePlay(); return; }
+    if (onButtonView) { e.preventDefault(); bvTogglePlay(); return; }
+  }
+
+  // Cmd/Ctrl + ; + ] — toggle on Exhibition View only
+  if ((e.metaKey || e.ctrlKey) && e.key === ']' && !e.shiftKey) {
+    if (window._semicolonHeld) {
+      e.preventDefault();
+      if (onExhibition) exhibTogglePlay();
+      else if (onButtonView) bvTogglePlay();
+    }
+  }
+});
+// Track semicolon hold state
+window._semicolonHeld = false;
+document.addEventListener('keydown', e => { if (e.key === ';') window._semicolonHeld = true; });
+document.addEventListener('keyup',  e => { if (e.key === ';') window._semicolonHeld = false; });
+
+// ── INIT ──
+buildGrid();
+selectPiece(1);
+
+// ── CURSOR LABEL ──
+document.addEventListener('mousemove', e => {
+  const l = document.getElementById('cursor-label');
+  if (l) { l.style.left = (e.clientX + 14) + 'px'; l.style.top = (e.clientY + 14) + 'px'; }
+});
+
+// ── SCROLL INDICATOR ──
+function updateScrollThumb() {
+  const track = document.getElementById('scrollTrack');
+  const thumb = document.getElementById('scrollThumb');
+  const grid = document.getElementById('gridPanel');
+  if (!track || !thumb || !grid) return;
+  const rect = grid.getBoundingClientRect();
+  track.style.left = (rect.left / 2) + 'px';
+  const trackH = window.innerHeight - 48;
+  const docH = document.documentElement.scrollHeight;
+  const scrollRange = docH - window.innerHeight;
+  const thumbH = Math.max(32, (window.innerHeight / docH) * trackH);
+  const thumbTop = scrollRange > 0 ? (window.scrollY / scrollRange) * (trackH - thumbH) : 0;
+  thumb.style.height = thumbH + 'px';
+  thumb.style.top = thumbTop + 'px';
+}
+window.addEventListener('scroll', updateScrollThumb);
+window.addEventListener('resize', updateScrollThumb);
+updateScrollThumb();
+
+// ── MATCH IMAGE PANEL HEIGHT TO GRID ──
+function matchImageToGrid() {
+  const grid = document.getElementById('gridPanel');
+  const panel = document.getElementById('imagePanel');
+  if (!grid || !panel) return;
+  panel.style.height = (grid.offsetHeight + 48) + 'px';
+  panel.style.minHeight = 'unset';
+}
+window.addEventListener('resize', matchImageToGrid);
+requestAnimationFrame(() => requestAnimationFrame(matchImageToGrid));
+</script>
+
+<!-- ══════════════ ADMIN OVERLAY ══════════════ -->
+<div id="admin-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;align-items:center;justify-content:center;">
+  <div id="admin-login" style="background:var(--cream);padding:40px;width:320px;text-align:center;">
+    <div style="font-family:'Averia Serif Libre',serif;font-size:22px;margin-bottom:24px;">Admin</div>
+    <input id="admin-pw-input" type="password" placeholder="PASSWORD" style="width:100%;padding:10px;font-family:Helvetica,Arial,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;border:1px solid var(--dark);background:var(--cream);outline:none;margin-bottom:8px;" />
+    <div id="admin-pw-error" style="display:none;color:#a00;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Incorrect password</div>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button onclick="closeAdmin()" style="flex:1;padding:10px;background:none;color:var(--dark);border:1px solid var(--dark);cursor:pointer;font-family:Helvetica,Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Cancel</button>
+      <button onclick="checkAdminPassword()" style="flex:1;padding:10px;background:var(--dark);color:var(--cream);border:none;cursor:pointer;font-family:Helvetica,Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Enter</button>
+    </div>
+  </div>
+  <div id="admin-panel" style="display:none;background:var(--cream);width:90%;max-width:680px;max-height:90vh;overflow-y:auto;padding:40px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
+      <div style="font-family:'Averia Serif Libre',serif;font-size:24px;">Treesis Admin</div>
+      <button onclick="closeAdmin()" style="background:none;border:1px solid var(--dark);padding:6px 14px;cursor:pointer;font-family:Helvetica,Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;">Close</button>
+    </div>
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">All Pieces</div>
+    <div id="admin-piece-list" style="margin-bottom:32px;max-height:200px;overflow-y:auto;"></div>
+    <div id="admin-form-section">
+      <div id="admin-form-title" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;">ADD NEW PIECE</div>
+      <input type="hidden" id="edit-id" />
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px;">Title *</label>
+          <input id="f-title" type="text" style="width:100%;padding:8px;font-family:Helvetica,Arial,sans-serif;font-size:12px;border:1px solid var(--dark);background:var(--cream);outline:none;" />
+        </div>
+        <div>
+          <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px;">Medium *</label>
+          <input id="f-medium" type="text" style="width:100%;padding:8px;font-family:Helvetica,Arial,sans-serif;font-size:12px;border:1px solid var(--dark);background:var(--cream);outline:none;" />
+        </div>
+        <div>
+          <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px;">Date *</label>
+          <input id="f-date" type="text" placeholder="02.03.2026" style="width:100%;padding:8px;font-family:Helvetica,Arial,sans-serif;font-size:12px;border:1px solid var(--dark);background:var(--cream);outline:none;" />
+        </div>
+        <div>
+          <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px;">Grid Label</label>
+          <input id="f-instrumentLabel" type="text" style="width:100%;padding:8px;font-family:Helvetica,Arial,sans-serif;font-size:12px;border:1px solid var(--dark);background:var(--cream);outline:none;" />
+        </div>
+        <div>
+          <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px;">Grid Icon — PNG Path</label>
+          <input id="f-instrumentImg" type="text" oninput="updateIconPreview()" style="width:100%;padding:8px;font-family:Helvetica,Arial,sans-serif;font-size:12px;border:1px solid var(--dark);background:var(--cream);outline:none;" />
+          <div style="margin-top:6px;width:48px;height:48px;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;background:var(--cream);">
+            <img id="icon-preview" src="" alt="" style="width:38px;height:38px;object-fit:contain;display:none;mix-blend-mode:multiply;" />
+            <span id="icon-preview-empty" style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#aaa;">Preview</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px;">Tree Drawing Image Path</label>
+        <input id="f-imageSrc" type="text" oninput="updateTreePreview()" style="width:100%;padding:8px;font-family:Helvetica,Arial,sans-serif;font-size:12px;border:1px solid var(--dark);background:var(--cream);outline:none;" />
+        <div style="margin-top:6px;width:100%;height:120px;border:1px solid #ccc;display:flex;align-items:center;justify-content:center;background:var(--cream);overflow:hidden;">
+          <img id="tree-preview" src="" alt="" style="max-width:100%;max-height:100%;object-fit:contain;display:none;" />
+          <span id="tree-preview-empty" style="font-size:9px;text-transform:uppercase;letter-spacing:0.05em;color:#aaa;">Preview</span>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px;">Short Description (browse + presentation)</label>
+        <textarea id="f-shortText" rows="3" style="width:100%;padding:8px;font-family:Helvetica,Arial,sans-serif;font-size:12px;border:1px solid var(--dark);background:var(--cream);outline:none;resize:vertical;"></textarea>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="font-size:10px;text-transform:uppercase;letter-spacing:0.08em;display:block;margin-bottom:4px;">Full Essay (detail modal)</label>
+        <textarea id="f-fullEssay" rows="5" style="width:100%;padding:8px;font-family:Helvetica,Arial,sans-serif;font-size:12px;border:1px solid var(--dark);background:var(--cream);outline:none;resize:vertical;"></textarea>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button onclick="saveAdminForm()" style="padding:12px 28px;background:var(--dark);color:var(--cream);border:none;cursor:pointer;font-family:Helvetica,Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">Save Piece</button>
+        <button onclick="clearAdminForm()" style="padding:12px 20px;background:none;color:var(--dark);border:1px solid var(--dark);cursor:pointer;font-family:Helvetica,Arial,sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">Clear</button>
+        <span id="admin-save-confirm" style="display:none;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:green;">✓ Saved!</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
