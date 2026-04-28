@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>treesis</title>
 <link href="https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
-<link rel="icon" type="image/png" href="images/TreesisLogo.png">
+<link rel="icon" type="image/png" href="Images/TreesisLogo.png">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -381,7 +381,7 @@
 <div id="main-page">
   <header>
     <div class="logo-tree" onclick="showMain()">
-      <img src="images/TreesisLogo.png" alt="Treesis Logo" />
+      <img src="Images/TreesisLogo.png" alt="Treesis Logo" />
     </div>
     <div style="display:flex;align-items:flex-end;gap:32px;">
       <button class="nav-link active" id="nav-browse" onclick="showMain()">Browse</button>
@@ -415,7 +415,7 @@
 <div id="presentation-page">
   <header>
     <div class="logo-tree" onclick="showMain()">
-      <img src="images/TreesisLogo.png" alt="Treesis Logo" />
+      <img src="Images/TreesisLogo.png" alt="Treesis Logo" />
     </div>
     <div style="display:flex;align-items:flex-end;gap:32px;">
       <button class="nav-link" onclick="showMain()">Browse</button>
@@ -451,12 +451,12 @@
     <div class="exhib-header-inner">
       <div style="display:flex;align-items:flex-end;gap:32px;padding-top:60px;">
         <div class="logo-tree" onclick="exhibTogglePlay()" style="cursor:pointer;width:52px;height:52px;margin-bottom:0;">
-          <img src="images/TreesisLogo.png" alt="Treesis Logo" style="width:52px;height:52px;" />
+          <img src="Images/TreesisLogo.png" alt="Treesis Logo" style="width:52px;height:52px;" />
         </div>
         <button class="nav-link" onclick="showMain()">Browse</button>
         <button class="nav-link" onclick="showPresentation()">Button View</button>
         <button class="nav-link active">Exhibition View</button>
-        <span style="font-family:Helvetica,Arial,sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.35);margin-left:8px;line-height:1;">click the wooden leaf to play/pause</span>
+        <img src="Images/clickthebutton.png" alt="click the button to pause/play" style="height:18px;opacity:0.6;margin-left:8px;vertical-align:middle;" />
       </div>
       <div class="exhib-title-fixed site-title" onclick="showMain()" style="cursor:pointer;">treesis</div>
     </div>
@@ -476,8 +476,7 @@
 
     <!-- Play / Pause button -->
     <button class="exhib-playpause-btn" id="exhib-playpause" onclick="exhibTogglePlay()">
-      <span class="exhib-pp-icon" id="exhib-ppIcon">▶</span>
-      <span id="exhib-ppLabel">PLAY</span>
+      <img id="exhib-ppIcon" src="Images/PlayButton.png" alt="Play" style="width:70px;height:70px;object-fit:contain;" />
     </button>
 
     <!-- Large tree image box -->
@@ -520,34 +519,47 @@ const DUMMY_SHORT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Se
 const DUMMY_ESSAY = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 const DEFAULT_PIECES = [
-  { id:1,  title:"Default Photo",  medium:"Graphite",       date:"01.15.2026", instrumentLabel:"Graphite",    instrumentSymbol:"✦", instrumentImg:"", imageSrc:"", shortText:"This project documents the same tree, observed from the same angle, drawn repeatedly across the course of a semester. Each study uses a different material or instrument — graphite, ink, wax, water, code — to explore how the medium shapes perception. The tree does not change. The drawings do. What you see here is a record of that difference: one subject, many hands, many ways of seeing.", fullEssay:DUMMY_ESSAY },
-  { id:2,  title:"Study No. 2",    medium:"Charcoal",       date:"01.20.2026", instrumentLabel:"Charcoal",    instrumentSymbol:"◆", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:3,  title:"Study No. 3",    medium:"Ink",            date:"01.25.2026", instrumentLabel:"Ink",         instrumentSymbol:"▲", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:4,  title:"Study No. 4",    medium:"Watercolor",     date:"01.28.2026", instrumentLabel:"Watercolor",  instrumentSymbol:"●", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:5,  title:"Study No. 5",    medium:"Oil Pastel",     date:"02.01.2026", instrumentLabel:"Oil Pastel",  instrumentSymbol:"■", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:6,  title:"Study No. 6",    medium:"Wax Crayon",     date:"02.03.2026", instrumentLabel:"Wax Crayon",  instrumentSymbol:"◉", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:7,  title:"Study No. 7",    medium:"Ballpoint Pen",  date:"02.05.2026", instrumentLabel:"Ballpoint",   instrumentSymbol:"✚", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:8,  title:"Study No. 8",    medium:"Marker",         date:"02.07.2026", instrumentLabel:"Marker",      instrumentSymbol:"◈", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:9,  title:"Study No. 9",    medium:"Acrylic Paint",  date:"02.09.2026", instrumentLabel:"Acrylic",     instrumentSymbol:"⬟", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:10, title:"Study No. 10",   medium:"Digital",        date:"02.11.2026", instrumentLabel:"Digital",     instrumentSymbol:"⬡", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:11, title:"Study No. 11",   medium:"Colored Pencil", date:"02.13.2026", instrumentLabel:"Col. Pencil", instrumentSymbol:"◇", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:12, title:"Study No. 12",   medium:"Gouache",        date:"02.15.2026", instrumentLabel:"Gouache",     instrumentSymbol:"△", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:13, title:"Study No. 13",   medium:"Orange",         date:"02.17.2026", instrumentLabel:"Orange",      instrumentSymbol:"○", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:14, title:"Study No. 14",   medium:"Chalk",          date:"02.19.2026", instrumentLabel:"Chalk",       instrumentSymbol:"✿", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:15, title:"Study No. 15",   medium:"Linocut",        date:"02.21.2026", instrumentLabel:"Linocut",     instrumentSymbol:"❖", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:16, title:"Study No. 16",   medium:"Collage",        date:"02.23.2026", instrumentLabel:"Collage",     instrumentSymbol:"◎", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:17, title:"Study No. 17",   medium:"Pen & Ink",      date:"02.25.2026", instrumentLabel:"Pen & Ink",   instrumentSymbol:"✱", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:18, title:"Study No. 18",   medium:"Spray Paint",    date:"02.27.2026", instrumentLabel:"Spray Paint", instrumentSymbol:"◐", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:19, title:"Study No. 19",   medium:"Woodblock",      date:"03.01.2026", instrumentLabel:"Woodblock",   instrumentSymbol:"⬠", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:20, title:"Study No. 20",   medium:"Bleach",         date:"03.03.2026", instrumentLabel:"Bleach",      instrumentSymbol:"◑", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:21, title:"Study No. 21",   medium:"Coffee",         date:"03.05.2026", instrumentLabel:"Coffee",      instrumentSymbol:"⬢", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:22, title:"Study No. 22",   medium:"Embroidery",     date:"03.07.2026", instrumentLabel:"Embroidery",  instrumentSymbol:"✧", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:23, title:"Study No. 23",   medium:"Typewriter",     date:"03.09.2026", instrumentLabel:"Typewriter",  instrumentSymbol:"◫", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
-  { id:24, title:"Study No. 24",   medium:"Rust",           date:"03.11.2026", instrumentLabel:"Rust",        instrumentSymbol:"◭", instrumentImg:"", imageSrc:"", shortText:DUMMY_SHORT, fullEssay:DUMMY_ESSAY },
+  { id:1,  title:"Default",      medium:"Default",       date:"2026", instrumentLabel:"Default",      instrumentSymbol:"✦", instrumentImg:"Images/Icon_DefaultTree.png",   imageSrc:"Images/TREE_DEFAULT.png",       shortText:"This project documents the same tree, observed from the same angle, drawn repeatedly across the course of a semester. Each study uses a different material or instrument to explore how the medium shapes perception. The tree does not change. The drawings do.", fullEssay:"This project documents the same tree, observed from the same angle, drawn repeatedly across the course of a semester. Each study uses a different material or instrument to explore how the medium shapes perception. The tree does not change. The drawings do. What you see here is a record of that difference: one subject, many hands, many ways of seeing." },
+  { id:2,  title:"Blur",         medium:"Blur",          date:"2026", instrumentLabel:"Blur",          instrumentSymbol:"◆", instrumentImg:"Images/TOOL_Blur.png",          imageSrc:"Images/TREE_Blur.png",          shortText:"", fullEssay:"" },
+  { id:3,  title:"Charcoal",     medium:"Charcoal",      date:"2026", instrumentLabel:"Charcoal",      instrumentSymbol:"▲", instrumentImg:"Images/TOOL_Charcoal.png",      imageSrc:"Images/TREE_Charcoal.png",      shortText:"", fullEssay:"" },
+  { id:4,  title:"Cut",          medium:"Cut",           date:"2026", instrumentLabel:"Cut",           instrumentSymbol:"●", instrumentImg:"Images/TOOL_Cut.png",           imageSrc:"Images/TREE_Cut.png",           shortText:"", fullEssay:"" },
+  { id:5,  title:"Googly Eye",   medium:"Googly Eye",    date:"2026", instrumentLabel:"Googly Eye",    instrumentSymbol:"■", instrumentImg:"Images/TOOL_GooglyEye.png",     imageSrc:"Images/TREE_GooglyEye.png",     shortText:"", fullEssay:"" },
+  { id:6,  title:"Green Paper",  medium:"Green Paper",   date:"2026", instrumentLabel:"Green Paper",   instrumentSymbol:"◉", instrumentImg:"Images/TOOL_GreenPaper.png",    imageSrc:"Images/TREE_GreenPaper.png",    shortText:"", fullEssay:"" },
+  { id:7,  title:"Green Posca",  medium:"Green Posca",   date:"2026", instrumentLabel:"Green Posca",   instrumentSymbol:"✚", instrumentImg:"Images/TOOL_GreenPosca.png",    imageSrc:"Images/TREE_GreenPosca.png",    shortText:"", fullEssay:"" },
+  { id:8,  title:"Jewel",        medium:"Jewel",         date:"2026", instrumentLabel:"Jewel",         instrumentSymbol:"◈", instrumentImg:"Images/TOOL_Jewel.png",         imageSrc:"Images/TREE_Jewel.png",         shortText:"", fullEssay:"" },
+  { id:9,  title:"Left Hand",    medium:"Left Hand",     date:"2026", instrumentLabel:"Left Hand",     instrumentSymbol:"⬟", instrumentImg:"Images/TOOL_LeftHand.png",      imageSrc:"Images/TREE_LeftHand.png",      shortText:"", fullEssay:"" },
+  { id:10, title:"Lines",        medium:"Lines",         date:"2026", instrumentLabel:"Lines",         instrumentSymbol:"⬡", instrumentImg:"Images/TOOL_Lines.png",         imageSrc:"Images/TREE_Lines.png",         shortText:"", fullEssay:"" },
+  { id:11, title:"Memory",       medium:"Memory",        date:"2026", instrumentLabel:"Memory",        instrumentSymbol:"◇", instrumentImg:"Images/TOOL_Memory.png",        imageSrc:"Images/TREE_Memory.png",        shortText:"", fullEssay:"" },
+  { id:12, title:"Minecraft",    medium:"Minecraft",     date:"2026", instrumentLabel:"Minecraft",     instrumentSymbol:"△", instrumentImg:"Images/TOOL_Minecraft.png",     imageSrc:"Images/TREE_Minecraft.png",     shortText:"", fullEssay:"" },
+  { id:13, title:"Money",        medium:"Money",         date:"2026", instrumentLabel:"Money",         instrumentSymbol:"○", instrumentImg:"Images/TOOL_Money.png",         imageSrc:"Images/TREE_Money.png",         shortText:"", fullEssay:"" },
+  { id:14, title:"Negative",     medium:"Negative",      date:"2026", instrumentLabel:"Negative",      instrumentSymbol:"✿", instrumentImg:"Images/TOOL_Negative.png",      imageSrc:"Images/TREE_Negative.png",      shortText:"", fullEssay:"" },
+  { id:15, title:"Oil Pastel",   medium:"Oil Pastel",    date:"2026", instrumentLabel:"Oil Pastel",    instrumentSymbol:"❖", instrumentImg:"Images/TOOL_OilPastel.png",     imageSrc:"Images/TREE_OilPastel.png",     shortText:"", fullEssay:"" },
+  { id:16, title:"Pink Dots",    medium:"Pink Dots",     date:"2026", instrumentLabel:"Pink Dots",     instrumentSymbol:"◎", instrumentImg:"Images/TOOL_PinkDots.png",      imageSrc:"Images/TREE_PinkDots.png",      shortText:"", fullEssay:"" },
+  { id:17, title:"Pokemon",      medium:"Pokemon",       date:"2026", instrumentLabel:"Pokemon",       instrumentSymbol:"✱", instrumentImg:"Images/TOOL_Pokemon.png",       imageSrc:"Images/TREE_Pokemon.png",       shortText:"", fullEssay:"" },
+  { id:18, title:"Post It",      medium:"Post It",       date:"2026", instrumentLabel:"Post It",       instrumentSymbol:"◐", instrumentImg:"Images/TOOL_PostIt.png",        imageSrc:"Images/TREE_Postit.png",        shortText:"", fullEssay:"" },
+  { id:19, title:"Post Not",     medium:"Post Not",      date:"2026", instrumentLabel:"Post Not",      instrumentSymbol:"⬠", instrumentImg:"Images/TOOL_PostNot.png",       imageSrc:"Images/TREE_PostNot.png",       shortText:"", fullEssay:"" },
+  { id:20, title:"Price",        medium:"Price",         date:"2026", instrumentLabel:"Price",         instrumentSymbol:"◑", instrumentImg:"Images/TOOL_Price.png",         imageSrc:"Images/TREE_Price.png",         shortText:"", fullEssay:"" },
+  { id:21, title:"Purple",       medium:"Purple",        date:"2026", instrumentLabel:"Purple",        instrumentSymbol:"⬢", instrumentImg:"Images/TOOL_Purple.png",        imageSrc:"Images/TREE_Purple.png",        shortText:"", fullEssay:"" },
+  { id:22, title:"Red",          medium:"Red",           date:"2026", instrumentLabel:"Red",           instrumentSymbol:"✧", instrumentImg:"Images/TOOL_Red.png",           imageSrc:"Images/TREE_Red.png",           shortText:"", fullEssay:"" },
+  { id:23, title:"Riso",         medium:"Riso",          date:"2026", instrumentLabel:"Riso",          instrumentSymbol:"◫", instrumentImg:"Images/TOOL_Riso.png",          imageSrc:"Images/TREE_Riso.png",          shortText:"", fullEssay:"" },
+  { id:24, title:"Riso Upside Down", medium:"Riso Upside Down", date:"2026", instrumentLabel:"Riso UpsideDown", instrumentSymbol:"◭", instrumentImg:"Images/TOOL_RisoUpsidedown.png", imageSrc:"Images/TREE_RisoUpsidedown.png", shortText:"", fullEssay:"" },
+  { id:25, title:"Simple",       medium:"Simple",        date:"2026", instrumentLabel:"Simple",        instrumentSymbol:"◍", instrumentImg:"Images/TOOL_Simple.png",        imageSrc:"Images/TREE_Simple.png",        shortText:"", fullEssay:"" },
+  { id:26, title:"Spooky",       medium:"Spooky",        date:"2026", instrumentLabel:"Spooky",        instrumentSymbol:"◌", instrumentImg:"Images/TOOL_Spooky.png",        imageSrc:"Images/TREE_Spooky.png",        shortText:"", fullEssay:"" },
+  { id:27, title:"Sprout",       medium:"Sprout",        date:"2026", instrumentLabel:"Sprout",        instrumentSymbol:"✣", instrumentImg:"Images/TOOL_Sprout.png",        imageSrc:"Images/TREE_Sprout.png",        shortText:"", fullEssay:"" },
+  { id:28, title:"Staple",       medium:"Staple",        date:"2026", instrumentLabel:"Staple",        instrumentSymbol:"◬", instrumentImg:"Images/TOOL_Staple.png",        imageSrc:"Images/TREE_Staple.png",        shortText:"", fullEssay:"" },
+  { id:29, title:"Staple Back",  medium:"Staple Back",   date:"2026", instrumentLabel:"Staple Back",   instrumentSymbol:"⬙", instrumentImg:"Images/TOOL_StapleBack.png",    imageSrc:"Images/TREE_StapleBack.png",    shortText:"", fullEssay:"" },
+  { id:30, title:"Target",       medium:"Target",        date:"2026", instrumentLabel:"Target",        instrumentSymbol:"◮", instrumentImg:"Images/TOOL_Target.png",        imageSrc:"Images/TREE_Target.png",        shortText:"", fullEssay:"" },
+  { id:31, title:"Transfer Paper", medium:"Transfer Paper", date:"2026", instrumentLabel:"Transfer Paper", instrumentSymbol:"✦", instrumentImg:"Images/TOOL_TransferPaper.png", imageSrc:"Images/TREE_TransferPaper.png", shortText:"", fullEssay:"" },
+  { id:32, title:"Yellow",       medium:"Yellow",        date:"2026", instrumentLabel:"Yellow",        instrumentSymbol:"◆", instrumentImg:"Images/TOOL_Yellow.png",        imageSrc:"Images/TREE_Yellow.png",        shortText:"", fullEssay:"" },
 ];
 
 function loadPieces() {
-  try { const s = localStorage.getItem('treesis_pieces'); return s ? JSON.parse(s) : DEFAULT_PIECES; }
+  try {
+    const version = localStorage.getItem('treesis_version');
+    if (version !== '2') { localStorage.removeItem('treesis_pieces'); localStorage.setItem('treesis_version', '2'); }
+    const s = localStorage.getItem('treesis_pieces');
+    return s ? JSON.parse(s) : DEFAULT_PIECES;
+  }
   catch(e) { return DEFAULT_PIECES; }
 }
 function savePieces(arr) { localStorage.setItem('treesis_pieces', JSON.stringify(arr)); }
@@ -817,8 +829,8 @@ function exhibNext() {
 
 function exhibStart() {
   exhibPlaying = true;
-  document.getElementById('exhib-ppIcon').textContent = '⏸';
-  document.getElementById('exhib-ppLabel').textContent = 'PAUSE';
+  document.getElementById('exhib-ppIcon').src = 'Images/PauseButton.png';
+  document.getElementById('exhib-ppIcon').alt = 'Pause';
   if (!exhibQueue.length) exhibQueue = exhibShuffleNew(exhibActivePieceId);
   exhibNext();
   clearInterval(exhibTimer);
@@ -828,9 +840,7 @@ function exhibStart() {
 function exhibStop() {
   exhibPlaying = false;
   const ppIcon = document.getElementById('exhib-ppIcon');
-  const ppLabel = document.getElementById('exhib-ppLabel');
-  if (ppIcon) ppIcon.textContent = '▶';
-  if (ppLabel) ppLabel.textContent = 'PLAY';
+  if (ppIcon) { ppIcon.src = 'Images/PlayButton.png'; ppIcon.alt = 'Play'; }
   clearInterval(exhibTimer);
   exhibTimer = null;
 }
