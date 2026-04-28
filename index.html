@@ -261,32 +261,38 @@
   }
 
   /* Medium name + quote below instrument box */
-  .exhib-medium-name {
+  .exhib-text-block {
     position: absolute;
-    left: 286px;
+    left: 231px;
     top: 514px;
-    width: 231px;
+    width: 340px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .exhib-medium-name {
     font-family: 'Averia Serif Libre', serif;
     font-size: 52px;
     font-weight: 400;
     letter-spacing: -1px;
-    line-height: 1;
+    line-height: 1.05;
     color: #fff;
+    width: 100%;
+    text-align: center;
   }
 
   .exhib-quote {
-    position: absolute;
-    left: 286px;
-    top: 576px;
-    width: 231px;
-    text-align: center;
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 28px;
+    font-size: 21px;
     font-weight: 400;
     font-style: normal;
     color: rgba(255,255,255,0.7);
     letter-spacing: 0;
+    width: 100%;
+    text-align: center;
   }
 
   /* Play/pause pop animation */
@@ -462,8 +468,10 @@
     </div>
 
     <!-- Medium name + quote -->
-    <div class="exhib-medium-name" id="exhib-mediumName">—</div>
-    <div class="exhib-quote" id="exhib-quote"></div>
+    <div class="exhib-text-block">
+      <div class="exhib-medium-name" id="exhib-mediumName">—</div>
+      <div class="exhib-quote" id="exhib-quote"></div>
+    </div>
 
     <!-- Large tree image box -->
     <div class="exhib-tree-box" id="exhib-treeBox">
