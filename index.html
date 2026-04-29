@@ -188,9 +188,24 @@
     display: block;
     background: #000;
     color: #fff;
-    height: 917px;
-    overflow: hidden;
+    min-height: 917px;
+    overflow-y: auto;
     position: relative;
+    cursor: none;
+  }
+
+  /* White circle cursor */
+  .exhib-cursor {
+    position: fixed;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    pointer-events: none;
+    z-index: 99999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, opacity 0.15s;
+    mix-blend-mode: difference;
   }
 
   /* Exhibition header layout */
@@ -310,9 +325,14 @@
     animation: ppPop 0.18s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 
+  /* Tree box scale when paused */
+  .exhib-tree-box.is-paused { transform: scale(1.045); }
+
   /* Tree image box: 448×673 at x=764, y=229 */
   .exhib-tree-box {
     position: absolute;
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-origin: center center;
     left: 764px;
     top: 66px; /* page y:214 - header 148 */
     width: 448px;
@@ -374,6 +394,7 @@
 
 <!-- ══════════════ EXHIBITION VIEW PAGE ══════════════ -->
 <div id="exhibition-page">
+<div class="exhib-cursor" id="exhibCursor"></div>
   <header>
     <div class="exhib-header-inner">
       <div style="display:flex;align-items:flex-end;gap:32px;padding-top:60px;">
@@ -548,10 +569,16 @@ function exhibNext() {
   exhibShowPiece(exhibQueue.shift());
 }
 
+let exhibAutoResumeTimer = null;
+
 function exhibStart() {
   exhibPlaying = true;
+  clearTimeout(exhibAutoResumeTimer); exhibAutoResumeTimer = null;
   const icon = document.getElementById('exhib-ppIcon');
   if (icon) { icon.src = 'Images/PauseButton.png'; icon.alt = 'Pause'; }
+  // Tree box back to normal size
+  const treeBox = document.getElementById('exhib-treeBox');
+  if (treeBox) treeBox.classList.remove('is-paused');
   if (!exhibQueue.length) exhibQueue = exhibShuffleNew(exhibActivePieceId);
   exhibNext();
   clearInterval(exhibTimer);
@@ -563,6 +590,16 @@ function exhibStop() {
   const icon = document.getElementById('exhib-ppIcon');
   if (icon) { icon.src = 'Images/PlayButton.png'; icon.alt = 'Play'; }
   clearInterval(exhibTimer); exhibTimer = null;
+  // Scale up tree box
+  const treeBox = document.getElementById('exhib-treeBox');
+  if (treeBox) {
+    treeBox.classList.remove('is-paused');
+    void treeBox.offsetWidth;
+    treeBox.classList.add('is-paused');
+  }
+  // Auto-resume after 2 minutes
+  clearTimeout(exhibAutoResumeTimer);
+  exhibAutoResumeTimer = setTimeout(() => { exhibStart(); }, 2 * 60 * 1000);
 }
 
 function exhibTogglePlay() {
@@ -602,6 +639,12 @@ document.addEventListener('keyup',   e => { if (e.key === ';') window._semicolon
 
 // ── INIT — start exhibition immediately ──
 exhibStart();
+
+// ── WHITE CIRCLE CURSOR ──
+const exhibCursor = document.getElementById('exhibCursor');
+document.addEventListener('mousemove', e => {
+  if (exhibCursor) { exhibCursor.style.left = e.clientX + 'px'; exhibCursor.style.top = e.clientY + 'px'; }
+});
 </script>
 
 <!-- ══════════════ ADMIN OVERLAY ══════════════ -->
