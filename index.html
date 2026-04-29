@@ -474,7 +474,7 @@ const DUMMY_SHORT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Se
 const DUMMY_ESSAY = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
 const DEFAULT_PIECES = [
-  { id:1,  title:"Camera",            medium:"Camera",            date:"2026", instrumentLabel:"Default",         instrumentSymbol:"✦", instrumentImg:"Images/Icon_DefaultTree.png",      imageSrc:"Images/TREE_DEFAULT.png",        shortText:"The tree in all its glory!", fullEssay:"The tree in all its glory!" },
+  { id:1,  title:"Camera",            medium:"Camera",            date:"2026", instrumentLabel:"Default",         instrumentSymbol:"✦", instrumentImg:"Images/TOOL_Default.png",      imageSrc:"Images/TREE_Default.png",        shortText:"The tree in all its glory!", fullEssay:"The tree in all its glory!" },
   { id:2,  title:"Blur",              medium:"Blur",              date:"2026", instrumentLabel:"Blur",             instrumentSymbol:"◆", instrumentImg:"Images/TOOL_Blur.png",             imageSrc:"Images/TREE_Blur.png",           shortText:"Charcoal that got smeared around and ended up looking like the ghost of the tree. Woooah", fullEssay:"Charcoal that got smeared around and ended up looking like the ghost of the tree. Woooah" },
   { id:3,  title:"Charcoal",          medium:"Charcoal",          date:"2026", instrumentLabel:"Charcoal",         instrumentSymbol:"▲", instrumentImg:"Images/TOOL_Charcoal.png",         imageSrc:"Images/TREE_Charcoal.png",       shortText:"I love love love love love charcoal I wish it didn't get everywhere always when you use it.", fullEssay:"I love love love love love charcoal I wish it didn't get everywhere always when you use it." },
   { id:4,  title:"Scissors",          medium:"Scissors",          date:"2026", instrumentLabel:"Cut",              instrumentSymbol:"●", instrumentImg:"Images/TOOL_Cut.png",              imageSrc:"Images/TREE_Cut.png",            shortText:"Placed on the cover of my photography binder thing, hence the label in the corner! #sponsored #not", fullEssay:"Placed on the cover of my photography binder thing, hence the label in the corner! #sponsored #not" },
@@ -511,7 +511,7 @@ const DEFAULT_PIECES = [
 function loadPieces() {
   try {
     const version = localStorage.getItem('treesis_version');
-    if (version !== '3') { localStorage.removeItem('treesis_pieces'); localStorage.setItem('treesis_version', '3'); }
+    if (version !== '4') { localStorage.removeItem('treesis_pieces'); localStorage.setItem('treesis_version', '4'); }
     const s = localStorage.getItem('treesis_pieces');
     return s ? JSON.parse(s) : DEFAULT_PIECES;
   }
