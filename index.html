@@ -446,7 +446,7 @@
 
 <!-- ══════════════ FINAL PRESENTATION PAGE ══════════════ -->
 <div id="final-page" style="display:none;background:#000;min-height:100vh;color:#fff;position:relative;">
-  <header style="background:#000;padding:18px 36px;display:flex;align-items:center;justify-content:space-between;">
+  <header id="final-header" style="background:#000;padding:18px 36px;display:flex;align-items:center;justify-content:space-between;">
     <div style="display:flex;align-items:center;gap:32px;">
       <div class="logo-tree" onclick="showExhibition()" style="cursor:pointer;width:44px;height:44px;">
         <img src="Images/TreesisLogo.png" alt="Treesis Logo" style="width:44px;height:44px;filter:brightness(0) invert(1);" />
@@ -592,10 +592,23 @@ function toggleFinalFullscreen() {
 document.addEventListener('fullscreenchange', () => {
   const exhibBtn = document.getElementById('exhib-fs-btn');
   const finalBtn = document.getElementById('final-fs-btn');
+  const finalHeader = document.getElementById('final-header');
+  const finalWrap = document.getElementById('final-slide-wrap');
   const onFinal = document.getElementById('final-page').style.display === 'block';
   const label = document.fullscreenElement ? '⛶ Exit Fullscreen' : '⛶ Fullscreen';
   if (onFinal && finalBtn) finalBtn.textContent = label;
   if (!onFinal && exhibBtn) exhibBtn.textContent = label;
+
+  if (onFinal) {
+    if (document.fullscreenElement) {
+      finalHeader.style.display = 'none';
+      finalWrap.style.height = '100vh';
+    } else {
+      finalHeader.style.display = 'flex';
+      finalWrap.style.height = 'calc(100vh - 80px)';
+    }
+  }
+
   // Exhibition fullscreen class
   const page = document.getElementById('exhibition-page');
   if (!onFinal) {
